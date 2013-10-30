@@ -4,18 +4,19 @@ require([
   'use strict';
   
   var needUpdate = true // only render when needed
-    , awaitMousePosition = false; // waiting for player to release mouse button
-  var tileSize = 40; // size of tiles
-  var p = { // current player position
-    x: 1,
-    y: 4
-  };
-  var p_end = { // current end of animation sub-path
-    x: 1,
-    y: 4  
-  };
-  var path = []; // path for player animation
-  var radius = tileSize / 2;
+    , awaitMousePosition = false // waiting for player to release mouse button
+    , tileSize = 40 // size of tiles
+    , p = { // current player position
+        x: 1,
+        y: 4
+      }
+    , p_end = { // current end of animation sub-path
+        x: 1,
+        y: 4  
+      }
+    , path = [] // path for player animation
+    , radius = tileSize / 2
+    ;
 
   /**
   * Map data
@@ -151,10 +152,10 @@ require([
       }
       if(awaitMousePosition && im.mouseAction.state === 0){
         // start doing things after mouse button was released
-        var mpos = im.mouseAction.position;
+        var mpos = im.mouseAction.position
         // map mouse position to tiles
-        var mx = Math.floor(mpos.x / tileSize);
-        var my = Math.floor(mpos.y / tileSize);
+          , mx = Math.floor(mpos.x / tileSize)
+          , my = Math.floor(mpos.y / tileSize);
         if(mx !== p.x || my !== p.y){ // mouse position different from player position?
           var onTile = false, tile = null;
           for(var i = 0; i < mapTiles.length; i++){
