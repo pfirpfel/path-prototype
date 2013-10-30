@@ -1,21 +1,25 @@
-// load the AMD modules we need
 require([
   'frozen/GameCore'
 ], function(GameCore){
   'use strict';
   
-  var needUpdate = true, awaitMousePosition = false;
-  var tileSize = 40;
-  var p = {
+  var needUpdate = true // only render when needed
+    , awaitMousePosition = false; // waiting for player to release mouse button
+  var tileSize = 40; // size of tiles
+  var p = { // current player position
     x: 1,
     y: 4
   };
-  var p_end = {
+  var p_end = { // current end of animation sub-path
     x: 1,
     y: 4  
   };
-  var path = [];
+  var path = []; // path for player animation
   var radius = tileSize / 2;
+
+  /**
+  * Map data
+  **/
   var mapTiles = [
         {x:1, y:4},
         {x:2, y:4},
@@ -50,7 +54,10 @@ require([
         {x:12, y:0, locked: true}, {x:12, y:2, locked: true}, {x:12, y:4, locked: true}
           , {x:12, y:6, locked: true}, {x:12, y:8, locked: true}, {x:12, y:10, locked: true}, {x:12, y:12, locked: true}
       ];
-      
+
+  /**
+  * Get Neighbors helper
+  **/
   function getNeighbors(tile){
     var neighbors = []
       , x = tile.x
@@ -70,6 +77,9 @@ require([
     return neighbors;
   }
   
+  /**
+  * Has tile helper
+  **/
   function hasTile(tileArr, tile){
     var _hasTile = false;
     for(var i = 0; i < tileArr.length; i++){
@@ -81,6 +91,9 @@ require([
     return _hasTile;
   }
   
+  /**
+  * Unlock helper
+  **/
   function unlock(tileArr, tile){
     for(var i = 0; i < tileArr.length; i++){
       if(tileArr[i].x === tile.x && tileArr[i].y === tile.y){
@@ -90,11 +103,16 @@ require([
     }
   }
   
+  /**
+  * Path finding
+  **/
   function findPathRec(current, origins, end, path){
+    // did we reach the end?
     if(current.x === end.x && current.y === end.y){
       path.push(current);
       return true;
     }
+    // look for the end
     var neighbors = getNeighbors(current);
     for(var i = 0; i < neighbors.length; i++){
       var neighbor = neighbors[i];
@@ -116,15 +134,21 @@ require([
     canvasId: 'canvas',
     initInput: function(im){ 
     },
+
     handleInput: function(im){
+      /**
+      * Handle mouse input
+      **/
       if(im.mouseAction.isPressed()){
         awaitMousePosition = true;
       }
       if(awaitMousePosition && im.mouseAction.state === 0){
+        // start doing things after mouse button was released
         var mpos = im.mouseAction.position;
+        // map mouse position to tiles
         var mx = Math.floor(mpos.x / tileSize);
         var my = Math.floor(mpos.y / tileSize);
-        if(mx !== p.x || my !== p.y){
+        if(mx !== p.x || my !== p.y){ // mouse position different from player position?
           var onTile = false, tile = null;
           for(var i = 0; i < mapTiles.length; i++){
             if(mapTiles[i].x === mx && mapTiles[i].y === my){
@@ -133,10 +157,13 @@ require([
               break;
             }
           }
+          // if need position is on a unlocked tile, see if there's a path to it
           if(onTile && (typeof tile.locked === 'undefined' || tile.locked === false)){
             var new_path = [];
             if(findPathRec(p, [p], {x: mx, y: my}, new_path)){
+              // update only if there is a path
               if(typeof tile.q !== 'undefined' && tile.q === false){
+                // handle question tile
                 if (tile.unlock !== 'undefined' ){
                   for(var ui = 0; ui < tile.unlock.length; ui++){
                     unlock(mapTiles, tile.unlock[ui]);
@@ -154,22 +181,21 @@ require([
         awaitMousePosition = false;
       }
     },
+
     update: function(millis){
     },
+
     draw: function(context){
       if(needUpdate){
-        
-        if(path.length > 0){
-          console.log();
-        }
-        
+        /**
+        * Calculate player animation
+        **/
         var currEnd = path[path.length-1];
         if(p_end !== currEnd && path.length > 0) p_end = currEnd;
         if(p_end !== null && path.length > 0 && p_end.x === p.x && p_end.y === p.y){
           path.splice(path.length-1,1);
           p_end = (path.length > 0) ? path[path.length-1] : null;
         }
-        
         if(p_end !== null && (p.x !== p_end.x || p.y !== p_end.y)){
           var step = 0.2;
           if(p_end.x-p.x>0){
@@ -183,10 +209,14 @@ require([
             p.y = Math.max(p_end.y, p.y-step);
           }
         }
+        if(p_end === null ) needUpdate = false; // no more updates if reached end of path
         
-        if(p_end === null ) needUpdate = false;
-        
+        /**
+        * Draw all the things!
+        **/
+        // reset canvas
         context.clearRect(0, 0, this.width, this.height);
+        // tiles
         context.lineWidth = 0;
         for(var i = 0; i < mapTiles.length; i++){
           if(typeof mapTiles[i].q === 'undefined'){
@@ -200,7 +230,7 @@ require([
           mapTiles[i].y*tileSize,
           tileSize, tileSize);
         }
-        
+        // player
         context.fillStyle="#00bbbb";
         context.beginPath();
         context.arc(p.x*tileSize+radius,p.y*tileSize+radius,radius*0.6,0,2*Math.PI);
