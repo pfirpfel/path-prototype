@@ -226,25 +226,32 @@ require([
         // tiles
         context.lineWidth = 0;
         for(var i = 0; i < mapTiles.length; i++){
-          if(typeof mapTiles[i].q === 'undefined'){
+          // determine color
+          if(typeof mapTiles[i].q === 'undefined'){ // default tiles
             context.fillStyle = (typeof mapTiles[i].locked === 'undefined' || mapTiles[i].locked === false)
               ? "#888888" // not locked
               : "#cfcfcf"; // locked
           } else {
-            if(mapTiles[i].q){
-              context.fillStyle = "#59f839";
-            } else {
-              context.fillStyle = (mapTiles[i].locked) ? "#D17777" : "#f83939";
+            if(mapTiles[i].q){ // question tiles
+              context.fillStyle = "#59f839"; // solved
+            } else { // unsolved
+              context.fillStyle =
+                (mapTiles[i].locked) ? "#D17777" : "#f83939"; // locked or unlocked?
             }
           }
-          context.fillRect(mapTiles[i].x*tileSize,
-          mapTiles[i].y*tileSize,
-          tileSize, tileSize);
+          // draw the tile
+          context.fillRect(mapTiles[i].x * tileSize, // x coord
+                           mapTiles[i].y * tileSize, // y coord
+                           tileSize,  // width
+                           tileSize); // heigth
         }
         // player
         context.fillStyle="#00bbbb";
         context.beginPath();
-        context.arc(p.x*tileSize+radius,p.y*tileSize+radius,radius*0.6,0,2*Math.PI);
+        context.arc(p.x * tileSize + radius, // x coord
+                    p.y * tileSize + radius, // y coord
+                    radius * 0.6, // radius
+                    0,2 * Math.PI); // stroke length => whole circle
         context.stroke();
         context.fill();
       }
