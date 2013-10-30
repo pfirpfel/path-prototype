@@ -23,36 +23,43 @@ require([
   var mapTiles = [
         {x:1, y:4},
         {x:2, y:4},
-        {x:3, y:4, q: false, unlock: [{x:4, y:3}, {x:4, y:4}, {x:4, y:5}, {x:5, y:3}, {x:6, y:3}]},
+        {x:3, y:4, q: false, unlock: [{x:4, y:3}, {x:4, y:4}, {x:4, y:5}, {x:5, y:3}
+                                    , {x:6, y:3}, {x:4, y:6}, {x:7, y:3}], locked: false},
         {x:4, y:3, locked: true}, {x:4, y:4, locked: true}, {x:4, y:5, locked: true}
-          , {x:4, y:6, q: false, unlock:[{x:5, y:6}, {x:6, y:6}, {x:6, y:7}]},
+          , {x:4, y:6, q: false, unlock:[{x:5, y:6}, {x:6, y:6}, {x:6, y:7}, {x:6, y:8}], locked: true},
         {x:5, y:3, locked: true}, {x:5, y:6, locked: true},
         {x:6, y:3, locked: true}, {x:6, y:6, locked: true}, {x:6, y:7, locked: true}
           , {x:6, y:8, q: false, unlock:[{x:7, y:8}, {x:8, y:8}, {x:6, y:9}, {x:6, y:9}
-                                       , {x:6, y:10}, {x:7, y:10}, {x:8, y:10}]}
+                                       , {x:6, y:10}, {x:7, y:10}, {x:8, y:10}, {x:9, y:8}
+                                       , {x:9, y:10}], locked: true}
           , {x:6, y:9, locked: true}, {x:6, y:10, locked: true},
-        {x:7, y:3, q: false, unlock:[{x:8, y:3}, {x:8, y:4}, {x:8, y:5}]}
+        {x:7, y:3, q: false, unlock:[{x:8, y:3}, {x:8, y:4}, {x:8, y:5}, {x:8, y:2}
+                                   , {x:8, y:6}], locked: true}
           , {x:7, y:8, locked: true}, {x:7, y:10, locked: true},
         {x:8, y:0, locked: true}, {x:8, y:1, locked: true}
-          , {x:8, y:2, q: false, unlock: [{x:8, y:1}, {x:9, y:2}, {x:8, y:0}, {x:9, y:0}, {x:10, y:0}]}
+          , {x:8, y:2, q: false, unlock: [{x:8, y:1}, {x:9, y:2}, {x:8, y:0}, {x:9, y:0}
+            , {x:10, y:0}, {x:11, y:0}, {x:10, y:2}], locked: true}
           , {x:8, y:3, locked: true}, {x:8, y:4, locked: true}, {x:8, y:5, locked: true}
-          , {x:8, y:6, q: false, unlock:[{x:9, y:6}, {x:10, y:6}, {x:11, y:6}, {x:12, y:6}]}
+          , {x:8, y:6, q: false, unlock:[{x:9, y:6}, {x:10, y:6}, {x:11, y:6}, {x:12, y:6}], locked: true}
           , {x:8, y:8, locked: true}, {x:8, y:10, locked: true},
         {x:9, y:0, locked: true}, {x:9, y:2, locked: true}, {x:9, y:6, locked: true}
-          , {x:9, y:8, q: false, unlock:[{x:10, y:8}, {x:11, y:8}, {x:12, y:8}]}
-          , {x:9, y:10, q: false, unlock:[{x:10, y:10}, {x:11, y:10}, {x:12, y:10}, {x:9, y:11}, {x:9, y:12}
-                                        , {x:10, y:12}, {x:11, y:12}, {x:12, y:12}]}
+          , {x:9, y:8, q: false, unlock:[{x:10, y:8}, {x:11, y:8}, {x:12, y:8}], locked: true}
+          , {x:9, y:10, q: false, unlock:[{x:10, y:10}, {x:11, y:10}, {x:12, y:10}, {x:9, y:11}
+                                        , {x:9, y:12}, {x:10, y:12}, {x:11, y:12}, {x:12, y:12}], locked: true}
           , {x:9, y:11, locked: true}, {x:9, y:12, locked: true},
         {x:10, y:0, locked: true}
-          , {x:10, y:2, q: false, unlock:[{x:10, y:3}, {x:10, y:4}, {x:11, y:2}, {x:12, y:2}]}
-          , {x:10, y:3, locked: true}, {x:10, y:4, locked: true}, {x:10, y:6, locked: true}, {x:10, y:8, locked: true}
-          , {x:10, y:10, locked: true}, {x:10, y:12, locked: true},
-        {x:11, y:0, q: false, unlock:[{x:12, y:0}]}
+          , {x:10, y:2, q: false, unlock:[{x:10, y:3}, {x:10, y:4}, {x:11, y:2}, {x:12, y:2}
+                                        , {x:11, y:4}], locked: true}
+          , {x:10, y:3, locked: true}, {x:10, y:4, locked: true}, {x:10, y:6, locked: true}
+          , {x:10, y:8, locked: true}, {x:10, y:10, locked: true}, {x:10, y:12, locked: true},
+        {x:11, y:0, q: false, unlock:[{x:12, y:0}], locked: true}
           , {x:11, y:2, locked: true}
-          , {x:11, y:4, q: false, unlock:[{x:12, y:4}]}
-          , {x:11, y:6, locked: true}, {x:11, y:8, locked: true}, {x:11, y:10, locked: true}, {x:11, y:12, locked: true},
+          , {x:11, y:4, q: false, unlock:[{x:12, y:4}], locked: true}
+          , {x:11, y:6, locked: true}, {x:11, y:8, locked: true}, {x:11, y:10, locked: true}
+          , {x:11, y:12, locked: true},
         {x:12, y:0, locked: true}, {x:12, y:2, locked: true}, {x:12, y:4, locked: true}
-          , {x:12, y:6, locked: true}, {x:12, y:8, locked: true}, {x:12, y:10, locked: true}, {x:12, y:12, locked: true}
+          , {x:12, y:6, locked: true}, {x:12, y:8, locked: true}, {x:12, y:10, locked: true}
+          , {x:12, y:12, locked: true}
       ];
 
   /**
@@ -224,7 +231,11 @@ require([
               ? "#888888" // not locked
               : "#cfcfcf"; // locked
           } else {
-            context.fillStyle = (mapTiles[i].q) ? "#59f839" : "#f83939";
+            if(mapTiles[i].q){
+              context.fillStyle = "#59f839";
+            } else {
+              context.fillStyle = (mapTiles[i].locked) ? "#D17777" : "#f83939";
+            }
           }
           context.fillRect(mapTiles[i].x*tileSize,
           mapTiles[i].y*tileSize,
