@@ -16,18 +16,19 @@ require([
   };
   var path = [];
   var radius = tileSize / 2;
-  var mapTiles = [
+  var mapTiles = [ //, q: false, unlock:[]
         {x:1, y:4},
         {x:2, y:4},
-        {x:3, y:4},
-        {x:4, y:3}, {x:4, y:4}, {x:4, y:5}, {x:4, y:6},
-        {x:5, y:3}, {x:5, y:6}, {x:6, y:3}, {x:6, y:6}, {x:6, y:7}, {x:6, y:8}, {x:6, y:9}, {x:6, y:10},
-        {x:7, y:3}, {x:7, y:8}, {x:7, y:10, q: true},
-        {x:8, y:0}, {x:8, y:2, q: false}, {x:8, y:3}, {x:8, y:4}, {x:8, y:5}, {x:8, y:6}, {x:8, y:8}, {x:8, y:10},
-        {x:9, y:0}, {x:9, y:2}, {x:9, y:6}, {x:9, y:8}, {x:9, y:10}, {x:9, y:11}, {x:9, y:12},
-        {x:10, y:0}, {x:10, y:2}, {x:10, y:3}, {x:10, y:4}, {x:10, y:6}, {x:10, y:8}, {x:10, y:10}, {x:10, y:12},
-        {x:11, y:2}, {x:11, y:4}, {x:11, y:6}, {x:11, y:8}, {x:11, y:10}, {x:11, y:12},
-        {x:12, y:2}, {x:12, y:4}, {x:12, y:6}, {x:12, y:8}, {x:12, y:10}, {x:12, y:12}
+        {x:3, y:4, q: false, unlock: [{x:4, y:4}]},
+        {x:4, y:3}, {x:4, y:5}, {x:4, y:6, q: false, unlock:[{x:5, y:6}]},
+        {x:5, y:3},
+        {x:6, y:3}, {x:6, y:6}, {x:6, y:7}, {x:6, y:8, q: false, unlock:[{x:7, y:8}, {x:6, y:9}]}, {x:6, y:10},
+        {x:7, y:3, q: false, unlock:[{x:8, y:3}]}, {x:7, y:10},
+        {x:8, y:0}, {x:8, y:2, q: false, unlock: [{x:8, y:1}, {x:9, y:2}]} , {x:8, y:4}, {x:8, y:5}, {x:8, y:6, q: false, unlock:[{x:9, y:6}]}, {x:8, y:8}, {x:8, y:10},
+        {x:9, y:0}, {x:9, y:8}, {x:9, y:10, q: false, unlock:[{x:10, y:10}, {x:9, y:11}]}, {x:9, y:12},
+        {x:10, y:0}, {x:10, y:2, q: false, unlock:[{x:10, y:3}, {x:11, y:2}]}, {x:10, y:4}, {x:10, y:6}, {x:10, y:8}, {x:10, y:12},
+        {x:11, y:4, q: false, unlock:[{x:12, y:4}]}, {x:11, y:6}, {x:11, y:8}, {x:11, y:10}, {x:11, y:12},
+        {x:12, y:2}, {x:12, y:6}, {x:12, y:8}, {x:12, y:10}, {x:12, y:12}
       ];
       
   function getNeighbors(tile){
@@ -91,14 +92,23 @@ require([
         var mx = Math.floor(mpos.x / tileSize);
         var my = Math.floor(mpos.y / tileSize);
         if(mx !== p.x || my !== p.y){
-          var onTile = false;
+          var onTile = false, tile = null;
           for(var i = 0; i < mapTiles.length; i++){
             if(mapTiles[i].x === mx && mapTiles[i].y === my){
+              tile = mapTiles[i];
               onTile = true;
               break;
             }
           }
           if(onTile){
+            if(typeof tile.q !== 'undefined' && tile.q === false){
+              if (tile.unlock !== 'undefined' ){
+                for(var ui = 0; ui < tile.unlock.length; ui++){
+                  mapTiles.push(tile.unlock[ui]);
+                }
+                tile.q = true;
+              }
+            }
             var new_path = [];
             if(findPathRec(p, [p], {x: mx, y: my}, new_path)){
               path = new_path;
