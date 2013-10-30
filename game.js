@@ -101,16 +101,16 @@ require([
             }
           }
           if(onTile){
-            if(typeof tile.q !== 'undefined' && tile.q === false){
-              if (tile.unlock !== 'undefined' ){
-                for(var ui = 0; ui < tile.unlock.length; ui++){
-                  mapTiles.push(tile.unlock[ui]);
-                }
-                tile.q = true;
-              }
-            }
             var new_path = [];
             if(findPathRec(p, [p], {x: mx, y: my}, new_path)){
+              if(typeof tile.q !== 'undefined' && tile.q === false){
+                if (tile.unlock !== 'undefined' ){
+                  for(var ui = 0; ui < tile.unlock.length; ui++){
+                    mapTiles.push(tile.unlock[ui]);
+                  }
+                  tile.q = true;
+                }
+              }
               path = new_path;
               needUpdate = true;
             }
