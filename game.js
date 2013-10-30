@@ -5,7 +5,7 @@ require([
   'use strict';
   
   var needUpdate = true;
-  var tileSize = 50;
+  var tileSize = 40;
   var p = {
     x: 1,
     y: 4
@@ -113,16 +113,16 @@ require([
               }
               path = new_path;
               needUpdate = true;
+            } else {
+              console.log('no path to this tile, entry locked?');
             }
           }
-          console.log('click pos: ' + mx + ':' + my);
         }
       }
     },
     update: function(millis){
     },
     draw: function(context){
-      console.log('draw');
       if(needUpdate){
         
         if(path.length > 0){
@@ -167,7 +167,7 @@ require([
         
         context.fillStyle="#00bbbb";
         context.beginPath();
-        context.arc(p.x*tileSize+radius,p.y*tileSize+radius,radius/2,0,2*Math.PI);
+        context.arc(p.x*tileSize+radius,p.y*tileSize+radius,radius*0.6,0,2*Math.PI);
         context.stroke();
         context.fill();
       }
