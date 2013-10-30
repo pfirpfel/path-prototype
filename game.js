@@ -4,7 +4,7 @@ require([
 ], function(GameCore){
   'use strict';
   
-  var needUpdate = true;
+  var needUpdate = true, awaitMousePosition = false;
   var tileSize = 40;
   var p = {
     x: 1,
@@ -118,6 +118,9 @@ require([
     },
     handleInput: function(im){
       if(im.mouseAction.isPressed()){
+        awaitMousePosition = true;
+      }
+      if(awaitMousePosition && im.mouseAction.state === 0){
         var mpos = im.mouseAction.position;
         var mx = Math.floor(mpos.x / tileSize);
         var my = Math.floor(mpos.y / tileSize);
@@ -148,6 +151,7 @@ require([
             }
           }
         }
+        awaitMousePosition = false;
       }
     },
     update: function(millis){
