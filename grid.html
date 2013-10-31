@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>isometric tiles: mouse mapping</title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+</head>
+<body>
+
+<canvas id="myCanvas" width="500" height="500" style="border:1px solid #d3d3d3;">
+Your browser does not support the HTML5 canvas tag.</canvas>
+<br><div id="status"></div>
+<script>
+
+var canvas=document.getElementById("myCanvas");
+var ctx=canvas.getContext("2d");
+var ts = 40;
+var alpha = 0.4 * Math.PI;
+var beta = Math.PI - alpha;
+var w = ts * Math.sqrt(2*(1-Math.cos(beta)));
+var h = ts * Math.sqrt(2*(1-Math.cos(alpha)));
+var c = { x: 50, y: 250};
+
+for(var row = 0; row < 7; row++){
+  for(var col = 0; col < 7; col++){
+    var x = c.x + w/2 * (row+col)
+      , y = c.y + h/2 * (col-row); 
+
+    ctx.beginPath();
+    ctx.moveTo(x - w / 2, y);
+    ctx.lineTo(x, y + h /2);
+    ctx.lineTo(x + w / 2,y);
+    ctx.lineTo(x, y - h /2);
+    ctx.closePath();
+    ctx.stroke();
+    
+    ctx.font="10px Arial";
+    ctx.fillText(row + '/' + col,x-10,y);
+  }
+}
+
+$(document).mousemove(function(event) {
+    var rect = canvas.getBoundingClientRect();
+    var mouse = {
+          x: event.clientX - rect.left,
+          y: event.clientY - rect.top
+    };
+    var t_x = (mouse.x - c.x) / w - (mouse.y - c.y) / h
+      , t_y = t_x + 2 * (mouse.y - c.y) / h;
+      
+    var norm_x = Math.floor(t_x + 0.5)
+      , norm_y = Math.floor(t_y + 0.5);
+
+    $("#status").html("<div> Pos in canvas: " + mouse.x +"/"+ mouse.y 
+      + "<br></br>tile : " + Math.round(t_x*1000)/1000 + "/" + Math.round(t_y*1000)/1000 
+      + "<br></br>normalized: " + norm_x + "/" + norm_y + "</div>");
+});
+</script>
+</body>
+</html>
