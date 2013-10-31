@@ -313,42 +313,45 @@ require([
             }
 
             // draw the tile
-            context.fillStyle = "#" + color.r + color.g + color.b;
             var tile_center = getTileCenter(tile.x, tile.y);
+
+            // shadow left
+            var r = Math.min(parseInt(color.r, 16) + 20, 255)
+              , g = Math.min(parseInt(color.g, 16) + 20, 255)
+              , b = Math.min(parseInt(color.b, 16) + 20, 255);
+            context.fillStyle = "#" + r.toString(16) + g.toString(16) + b.toString(16);
+            context.beginPath();
+            context.moveTo(tile_center.x - w / 2 + 1 , tile_center.y);
+            context.lineTo(tile_center.x - w / 2 , tile_center.y);
+            context.lineTo(tile_center.x - w / 2, tile_center.y + h / 4);
+            context.lineTo(tile_center.x, tile_center.y + h / 2 + h / 4);
+            context.lineTo(tile_center.x + 1, tile_center.y + h / 2 + h / 4 - 1);
+            context.lineTo(tile_center.x + 1, tile_center.y + h / 2 - 1);
+            context.closePath();
+            context.fill();
+
+            // shadow right
+            r = Math.min(r + 20, 255);
+            g = Math.min(g + 20, 255);
+            b = Math.min(b + 20, 255);
+            context.fillStyle = "#" + r.toString(16) + g.toString(16) + b.toString(16);
+            context.beginPath();
+            context.moveTo(tile_center.x, tile_center.y + h / 2 - 1);
+            context.lineTo(tile_center.x, tile_center.y + h / 2 + h / 4);
+            context.lineTo(tile_center.x + w / 2, tile_center.y + h / 4);
+            context.lineTo(tile_center.x + w / 2, tile_center.y);
+            context.lineTo(tile_center.x + w / 2 - 1, tile_center.y);
+            context.closePath();
+            context.fill();
+
+            // actual tile
+            context.fillStyle = "#" + color.r + color.g + color.b;
             context.beginPath();
             context.moveTo(tile_center.x - w / 2, tile_center.y);
             context.lineTo(tile_center.x, tile_center.y + h /2);
             context.lineTo(tile_center.x + w / 2, tile_center.y);
             context.lineTo(tile_center.x, tile_center.y - h /2);
             context.closePath();
-            context.stroke();
-            context.fill();
-
-            var r = Math.min(parseInt(color.r, 16) + 20, 255)
-              , g = Math.min(parseInt(color.g, 16) + 20, 255)
-              , b = Math.min(parseInt(color.b, 16) + 20, 255);
-            context.fillStyle = "#" + r.toString(16) + g.toString(16) + b.toString(16);
-
-            context.beginPath();
-            context.moveTo(tile_center.x - w / 2, tile_center.y);
-            context.lineTo(tile_center.x - w / 2, tile_center.y + h / 4);
-            context.lineTo(tile_center.x, tile_center.y + h / 2 + h / 4);
-            context.lineTo(tile_center.x, tile_center.y + h / 2);
-            context.closePath();
-            context.stroke();
-            context.fill();
-            
-            r = Math.min(r + 20, 255);
-            g = Math.min(g + 20, 255);
-            b = Math.min(b + 20, 255);
-            context.fillStyle = "#" + r.toString(16) + g.toString(16) + b.toString(16);
-            context.beginPath();
-            context.moveTo(tile_center.x, tile_center.y + h / 2);
-            context.lineTo(tile_center.x, tile_center.y + h / 2 + h / 4);
-            context.lineTo(tile_center.x + w / 2, tile_center.y + h / 4);
-            context.lineTo(tile_center.x + w / 2, tile_center.y);
-            context.closePath();
-            context.stroke();
             context.fill();
           }
         }
@@ -364,7 +367,11 @@ require([
                     player_coord.y, // y coord
                     radius * 0.6, // radius
                     0,2 * Math.PI); // stroke length => whole circle
-        context.stroke();
+        //context.stroke();
+        context.shadowColor = '#000';
+        context.shadowBlur = 20;
+        context.shadowOffsetX = 0;
+        context.shadowOffsetY = 10;
         context.fill();
       }
     }
