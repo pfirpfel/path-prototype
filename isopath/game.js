@@ -298,19 +298,22 @@ require([
           for(var tileID = 0; tileID < tilesBucketedByzIndex[zIndexArray[bucket]].length; tileID++ ){
             var tile = tilesBucketedByzIndex[zIndexArray[bucket]][tileID];
             // determine color
+            var color = {};// { r: "", g: "", b: "" }
             if(typeof tile.q === 'undefined'){ // default tiles
-              context.fillStyle = (typeof tile.locked === 'undefined' || tile.locked === false)
-                ? "#888888" // not locked
-                : "#cfcfcf"; // locked
+              color = (typeof tile.locked === 'undefined' || tile.locked === false)
+                ? { r: "88", g: "88", b: "88" } // not locked
+                : { r: "cf", g: "cf", b: "cf" }; // locked
             } else {
               if(tile.q){ // question tiles
-                context.fillStyle = "#59f839"; // solved
+                color = { r: "59", g: "f8", b: "39" }; // solved
               } else { // unsolved
-                context.fillStyle =
-                  (tile.locked) ? "#D17777" : "#f83939"; // locked or unlocked?
+                color =
+                  (tile.locked) ? { r: "d1", g: "77", b: "77" } : { r: "f8", g: "39", b: "39" }; // locked or unlocked?
               }
             }
+
             // draw the tile
+            context.fillStyle = "#" + color.r + color.g + color.b;
             var tile_center = getTileCenter(tile.x, tile.y);
             context.beginPath();
             context.moveTo(tile_center.x - w / 2, tile_center.y);
@@ -320,6 +323,12 @@ require([
             context.closePath();
             context.stroke();
             context.fill();
+
+            var r = Math.min(parseInt(color.r, 16) + 20, 255)
+              , g = Math.min(parseInt(color.g, 16) + 20, 255)
+              , b = Math.min(parseInt(color.b, 16) + 20, 255);
+            context.fillStyle = "#" + r.toString(16) + g.toString(16) + b.toString(16);
+
             context.beginPath();
             context.moveTo(tile_center.x - w / 2, tile_center.y);
             context.lineTo(tile_center.x - w / 2, tile_center.y + h / 4);
@@ -329,6 +338,10 @@ require([
             context.stroke();
             context.fill();
             
+            r = Math.min(r + 20, 255);
+            g = Math.min(g + 20, 255);
+            b = Math.min(b + 20, 255);
+            context.fillStyle = "#" + r.toString(16) + g.toString(16) + b.toString(16);
             context.beginPath();
             context.moveTo(tile_center.x, tile_center.y + h / 2);
             context.lineTo(tile_center.x, tile_center.y + h / 2 + h / 4);
