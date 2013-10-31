@@ -277,36 +277,76 @@ require([
         context.clearRect(0, 0, this.width, this.height);
         // tiles
         context.lineWidth = 0;
+        
+        var zIndexArray = [];
+        var tilesBucketedByzIndex = {};
+          // bucketize them
         for(var i = 0; i < mapTiles.length; i++){
-          // determine color
-          if(typeof mapTiles[i].q === 'undefined'){ // default tiles
-            context.fillStyle = (typeof mapTiles[i].locked === 'undefined' || mapTiles[i].locked === false)
-              ? "#888888" // not locked
-              : "#cfcfcf"; // locked
-          } else {
-            if(mapTiles[i].q){ // question tiles
-              context.fillStyle = "#59f839"; // solved
-            } else { // unsolved
-              context.fillStyle =
-                (mapTiles[i].locked) ? "#D17777" : "#f83939"; // locked or unlocked?
-            }
+          var tile = mapTiles[i]
+            , index = tile.y - tile.x
+          ;
+          if(zIndexArray.indexOf(index) === -1){
+            zIndexArray.push(index);
+            tilesBucketedByzIndex[index] = [];
           }
-          // draw the tile
-          
-          var tile_center = getTileCenter(mapTiles[i].x, mapTiles[i].y);
-          context.beginPath();
-          context.moveTo(tile_center.x - w / 2, tile_center.y);
-          context.lineTo(tile_center.x, tile_center.y + h /2);
-          context.lineTo(tile_center.x + w / 2, tile_center.y);
-          context.lineTo(tile_center.x, tile_center.y - h /2);
-          context.closePath();
-          context.stroke();
-          context.fill();
+          tilesBucketedByzIndex[index].push(tile);
+        }
+        zIndexArray.sort(function(a,b){
+          return (a - b);
+        });
+        for(var bucket = 0; bucket < zIndexArray.length; bucket++){
+          for(var tileID = 0; tileID < tilesBucketedByzIndex[zIndexArray[bucket]].length; tileID++ ){
+            var tile = tilesBucketedByzIndex[zIndexArray[bucket]][tileID];
+            // determine color
+            if(typeof tile.q === 'undefined'){ // default tiles
+              context.fillStyle = (typeof tile.locked === 'undefined' || tile.locked === false)
+                ? "#888888" // not locked
+                : "#cfcfcf"; // locked
+            } else {
+              if(tile.q){ // question tiles
+                context.fillStyle = "#59f839"; // solved
+              } else { // unsolved
+                context.fillStyle =
+                  (tile.locked) ? "#D17777" : "#f83939"; // locked or unlocked?
+              }
+            }
+            // draw the tile
+            var tile_center = getTileCenter(tile.x, tile.y);
+            context.beginPath();
+            context.moveTo(tile_center.x - w / 2, tile_center.y);
+            context.lineTo(tile_center.x, tile_center.y + h /2);
+            context.lineTo(tile_center.x + w / 2, tile_center.y);
+            context.lineTo(tile_center.x, tile_center.y - h /2);
+            context.closePath();
+            context.stroke();
+            context.fill();
+            context.beginPath();
+            context.moveTo(tile_center.x - w / 2, tile_center.y);
+            context.lineTo(tile_center.x - w / 2, tile_center.y + h / 4);
+            context.lineTo(tile_center.x, tile_center.y + h / 2 + h / 4);
+            context.lineTo(tile_center.x, tile_center.y + h / 2);
+            context.closePath();
+            context.stroke();
+            context.fill();
+            
+            context.beginPath();
+            context.moveTo(tile_center.x, tile_center.y + h / 2);
+            context.lineTo(tile_center.x, tile_center.y + h / 2 + h / 4);
+            context.lineTo(tile_center.x + w / 2, tile_center.y + h / 4);
+            context.lineTo(tile_center.x + w / 2, tile_center.y);
+            context.closePath();
+            context.stroke();
+            context.fill();
+          }
         }
         // player
-        context.fillStyle="#00bbbb";
-        context.beginPath();
         var player_coord = isometricToCartesian(p);
+        var grd=context.createRadialGradient(player_coord.x - 10, player_coord.y - 10, 20
+                                           , player_coord.x - 5, player_coord.y - 5, 1);
+        grd.addColorStop(0,"#00bbbb");
+        grd.addColorStop(1,"white");
+        context.fillStyle=grd;
+        context.beginPath();
         context.arc(player_coord.x, // x coord
                     player_coord.y, // y coord
                     radius * 0.6, // radius
