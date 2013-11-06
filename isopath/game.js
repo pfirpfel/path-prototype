@@ -8,7 +8,6 @@ require([
     , tileSize = 40 // size of tiles
     , path = [] // path for player animation
     , radius = tileSize / 2
-    
     , map = {
       cols: 12,
       rows: 12
@@ -185,6 +184,23 @@ require([
     };  
   }
 
+  function changeBrightness(color, delta){
+    // { r: "", g: "", b: "" }  values as hex strings
+    if(delta > 0){
+      return {
+        r: Math.min(parseInt(color.r, 16) + delta, 255).toString(16),
+        g: Math.min(parseInt(color.g, 16) + delta, 255).toString(16),
+        b: Math.min(parseInt(color.b, 16) + delta, 255).toString(16)
+      }
+    } else {
+      return {
+        r: Math.max(parseInt(color.r, 16) + delta, 0).toString(16),
+        g: Math.max(parseInt(color.g, 16) + delta, 0).toString(16),
+        b: Math.max(parseInt(color.b, 16) + delta, 0).toString(16)
+      }
+    }
+  }
+
   // setup a GameCore instance
   var game = new GameCore({
     canvasId: 'canvas',
@@ -202,12 +218,8 @@ require([
       if(awaitMousePosition && im.mouseAction.state === 0){
         // start doing things after mouse button was released
         var mpos = im.mouseAction.position
-        // map mouse position to tiles
-          , mt = cartesianToIsometricTile(mpos);
-          /*, mx = Math.floor(mpos.x / tileSize)
-          , my = Math.floor(mpos.y / tileSize);*/
-          
-          
+          , mt = cartesianToIsometricTile(mpos); // map mouse position to tiles
+
         if(mt.x !== p.x || mt.y !== p.y){ // mouse position different from player position?
           var onTile = false, tile = null;
           // mouse over a tile?
@@ -321,10 +333,8 @@ require([
             var tile_center = getTileCenter(tile.x, tile.y);
 
             // shadow left
-            var r = Math.min(parseInt(color.r, 16) + 20, 255)
-              , g = Math.min(parseInt(color.g, 16) + 20, 255)
-              , b = Math.min(parseInt(color.b, 16) + 20, 255);
-            context.fillStyle = "#" + r.toString(16) + g.toString(16) + b.toString(16);
+            var color_darker = changeBrightness(color, 20);
+            context.fillStyle = "#" + color_darker.r + color_darker.g + color_darker.b;
             context.beginPath();
             context.moveTo(tile_center.x - w / 2 + 1 , tile_center.y);
             context.lineTo(tile_center.x - w / 2 , tile_center.y);
@@ -336,10 +346,8 @@ require([
             context.fill();
 
             // shadow right
-            r = Math.min(r + 20, 255);
-            g = Math.min(g + 20, 255);
-            b = Math.min(b + 20, 255);
-            context.fillStyle = "#" + r.toString(16) + g.toString(16) + b.toString(16);
+            var color_darker = changeBrightness(color_darker, 20);
+            context.fillStyle = "#" + color_darker.r + color_darker.g + color_darker.b;
             context.beginPath();
             context.moveTo(tile_center.x, tile_center.y + h / 2 - 1);
             context.lineTo(tile_center.x, tile_center.y + h / 2 + h / 4);
