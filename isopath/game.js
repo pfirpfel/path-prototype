@@ -383,7 +383,7 @@ require([
         //context.stroke();
         context.shadowColor = '#000';
         context.shadowBlur = 20;
-        context.shadowOffsetX = 0;
+        context.shadowOffsetX = 5;
         context.shadowOffsetY = 10;
         context.fill();
       }
