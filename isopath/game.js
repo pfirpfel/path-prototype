@@ -34,6 +34,7 @@ require([
         x: p.x,
         y: p.y  
       }
+    , startTime = 0
     ;
 
   /**
@@ -233,6 +234,7 @@ require([
               }
               path = new_path;
               needUpdate = true;
+              startTime = (new Date()).getTime();
             } else {
               console.log('no path to this tile, entry locked?');
             }
@@ -257,7 +259,9 @@ require([
           p_end = (path.length > 0) ? path[path.length-1] : null;
         }
         if(p_end !== null && (p.x !== p_end.x || p.y !== p_end.y)){
-          var step = 0.2;
+          var time = (new Date()).getTime() - startTime;
+          var acceleration = 3;
+          var step = 0.5 * acceleration * Math.pow(time / 1000, 2);
           if(p_end.x-p.x>0){
             p.x = Math.min(p_end.x, p.x+step);
           } else {
