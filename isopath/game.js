@@ -187,6 +187,7 @@ require([
   // setup a GameCore instance
   var game = new GameCore({
     canvasId: 'canvas',
+    maxStep: 1000 / 60,
     initInput: function(im){ 
     },
 
