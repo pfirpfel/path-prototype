@@ -272,8 +272,15 @@ require([
         }
         if(p_end !== null && (p.x !== p_end.x || p.y !== p_end.y)){
           var time = (new Date()).getTime() - startTime;
-          var acceleration = 3;
-          var step = 0.5 * acceleration * Math.pow(time / 1000, 2);
+          var acceleration = 2,
+              vmax = 0.2,
+              step = 0;
+          if(time < (vmax / acceleration)){ // still accelerating?
+            step = 0.5 * acceleration * Math.pow(time / 1000, 2);
+          } else { // or already at vmax?
+            step = time / 1000 * vmax;
+          }
+
           if(p_end.x-p.x>0){
             p.x = Math.min(p_end.x, p.x+step);
           } else {
