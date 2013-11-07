@@ -208,8 +208,11 @@ require([
   }
   
   function resizeCanvas(){
-      canvas.width = game.width = window.innerWidth;
-      canvas.height = game.height = window.innerHeight;
+      var ratio = 1;
+      if("devicePixelRatio" in window)
+        ratio = window.devicePixelRatio;
+      canvas.width = game.width = window.innerWidth / ratio;
+      canvas.height = game.height = window.innerHeight / ratio;
       needUpdate = true;
   }
 
