@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>inner/outer</title>
+  </head>
+  <body>
+      <div id="status" style="display: block; border:1px solid black;">
+      userAgent:  <span id="userAgent">?</span><br>
+      outerHeight: <span id="outerHeight">?</span><br>
+      outerWidth: <span id="outerWidth">?</span><br>
+      innerHeight: <span id="innerHeight">?</span><br>
+      innerWidth: <span id="innerWidth">?</span><br>
+      devicePixelRatio: <span id="devicePixelRatio">?</span>
+      </div>
+      <script>
+      function update(){
+        document.getElementById("userAgent").innerHTML = navigator.userAgent;
+        document.getElementById("outerHeight").innerHTML = window.outerHeight;
+        document.getElementById("outerWidth").innerHTML = window.outerWidth;
+        document.getElementById("innerHeight").innerHTML = window.innerHeight;
+        document.getElementById("innerWidth").innerHTML = window.innerWidth;
+        document.getElementById("devicePixelRatio").innerHTML = window.devicePixelRatio;
+      }
+      var status = document.getElementById("status");
+      status.onclick = update;
+      </script>
+  </body>
+</html>
