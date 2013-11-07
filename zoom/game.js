@@ -211,8 +211,8 @@ require([
       var ratio = 1;
       if("devicePixelRatio" in window)
         ratio = window.devicePixelRatio;
-      canvas.width = game.width = window.innerWidth * ratio;
-      canvas.height = game.height = window.innerHeight * ratio;
+      canvas.width = game.width = window.innerWidth;
+      canvas.height = game.height = window.innerHeight;
       needUpdate = true;
   }
 
