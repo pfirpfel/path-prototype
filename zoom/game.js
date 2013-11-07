@@ -212,7 +212,8 @@ require([
       if("devicePixelRatio" in window)
         ratio = window.devicePixelRatio;
       canvas.width = game.width = window.innerWidth;
-      canvas.height = game.height = window.innerHeight;
+      canvas.height = game.height = window.innerWidth * window.outerHeight / window.outerWidth;
+      window.scrollTo(0, 1);
       needUpdate = true;
   }
 
