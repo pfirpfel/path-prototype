@@ -220,16 +220,20 @@ require([
     
     postInit: function() {
       window.addEventListener('resize', resizeCanvas, false);
+      if("onorientationchange" in window)
+        window.addEventListener('onorientationchange', resizeCanvas, false);
       resizeCanvas();
     },
     
     initInput: function(im){ 
-      im.on("drag", function(event){
+      im.on("dragend", function(event){
         console.log(event.gesture);
-        moveDelta.x = event.gesture.deltaX - moveDelta.x;
+        /*moveDelta.x = event.gesture.deltaX - moveDelta.x;
         moveDelta.y = event.gesture.deltaY - moveDelta.y;
         o_tile.x += moveDelta.x;
-        o_tile.y += moveDelta.y;
+        o_tile.y += moveDelta.y;*/
+        o_tile.x += event.gesture.deltaX;
+        o_tile.y += event.gesture.deltaY;
         needUpdate = true;
       })
     },
