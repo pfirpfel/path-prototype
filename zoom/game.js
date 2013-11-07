@@ -229,7 +229,7 @@ require([
     
     initInput: function(im){ 
       im.on("dragend", function(event){
-        console.log(event.gesture);
+        //console.log(event.gesture);
         /*moveDelta.x = event.gesture.deltaX - moveDelta.x;
         moveDelta.y = event.gesture.deltaY - moveDelta.y;
         o_tile.x += moveDelta.x;
