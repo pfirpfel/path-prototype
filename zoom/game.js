@@ -40,6 +40,7 @@ require([
       y: 0
       }
     , startTime = 0
+    , ratio = ("devicePixelRatio" in window) ? window.devicePixelRatio : 1
     ;
 
   /**
@@ -208,9 +209,6 @@ require([
   }
   
   function resizeCanvas(){
-      var ratio = 1;
-      if("devicePixelRatio" in window)
-        ratio = window.devicePixelRatio;
       canvas.width = game.width = window.innerWidth;
       canvas.height = game.height = window.innerWidth * window.outerHeight / window.outerWidth;
       window.scrollTo(0, 1);
@@ -236,8 +234,8 @@ require([
         moveDelta.y = event.gesture.deltaY - moveDelta.y;
         o_tile.x += moveDelta.x;
         o_tile.y += moveDelta.y;*/
-        o_tile.x += event.gesture.deltaX;
-        o_tile.y += event.gesture.deltaY;
+        o_tile.x += ratio * event.gesture.deltaX;
+        o_tile.y += ratio * event.gesture.deltaY;
         needUpdate = true;
       })
     },
