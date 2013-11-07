@@ -3,6 +3,9 @@
   <head>
     <meta charset="utf-8">
     <title>inner/outer</title>
+    <style>
+     body { font-size: x-large;}
+    </style>
   </head>
   <body>
       <div id="status" style="display: block; border:1px solid black;">
@@ -22,8 +25,7 @@
         document.getElementById("innerWidth").innerHTML = window.innerWidth;
         document.getElementById("devicePixelRatio").innerHTML = window.devicePixelRatio;
       }
-      var status = document.getElementById("status");
-      status.onclick = update;
+      setInterval(update, 100);
       </script>
   </body>
 </html>
