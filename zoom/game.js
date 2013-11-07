@@ -6,6 +6,7 @@ require([
   var needUpdate = true // only render when needed
     , canvas = document.getElementById('canvas')
     , awaitMousePosition = false // waiting for player to release mouse button
+    , BASE_TILE_SIZE = 40
     , tileSize = 40 // size of tiles
     , path = [] // path for player animation
     , radius = tileSize / 2
@@ -33,6 +34,10 @@ require([
     , p_end = { // current end of animation sub-path
         x: p.x,
         y: p.y  
+      }
+    , moveDelta = {
+      x: 0,
+      y: 0
       }
     , startTime = 0
     ;
@@ -203,8 +208,8 @@ require([
   }
   
   function resizeCanvas(){
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      canvas.width = game.width = window.innerWidth;
+      canvas.height = game.height = window.innerHeight;
       needUpdate = true;
   }
 
@@ -219,6 +224,14 @@ require([
     },
     
     initInput: function(im){ 
+      im.on("drag", function(event){
+        console.log(event.gesture);
+        moveDelta.x = event.gesture.deltaX - moveDelta.x;
+        moveDelta.y = event.gesture.deltaY - moveDelta.y;
+        o_tile.x += moveDelta.x;
+        o_tile.y += moveDelta.y;
+        needUpdate = true;
+      })
     },
 
     handleInput: function(im){
