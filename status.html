@@ -16,6 +16,7 @@
       innerWidth: <span id="innerWidth">?</span><br>
       screenHeight: <span id="screenHeight">?</span><br>
       screenWidth: <span id="screenWidth">?</span><br>
+      deviceOrientation: <span id="deviceOrientation">?</span><br>
       devicePixelRatio: <span id="devicePixelRatio">?</span>
       </p>
       <script>
@@ -27,6 +28,7 @@
         document.getElementById("innerWidth").innerHTML = window.innerWidth;
         document.getElementById("screenHeight").innerHTML = screen.height;
         document.getElementById("screenWidth").innerHTML = screen.width;
+        document.getElementById("deviceOrientation").innerHTML = window.orientation;
         document.getElementById("devicePixelRatio").innerHTML = window.devicePixelRatio;
       }
       setInterval(update, 100);
