@@ -6,7 +6,7 @@
 </head>
 <body>
 
-<canvas id="myCanvas" width="500" height="500" style="border:1px solid #d3d3d3;">
+<canvas id="myCanvas" width="600" height="500" style="border:1px solid #d3d3d3;">
 Your browser does not support the HTML5 canvas tag.</canvas>
 <br><div id="status"></div>
 <script>
@@ -18,10 +18,12 @@ var alpha = 0.4 * Math.PI;
 var beta = Math.PI - alpha;
 var w = ts * Math.sqrt(2*(1-Math.cos(beta)));
 var h = ts * Math.sqrt(2*(1-Math.cos(alpha)));
-var c = { x: 50, y: 250};
+var rows = 8,
+    cols = 8;
+var c = { x: 50, y: rows/2*h+h};
 
-for(var row = 0; row < 7; row++){
-  for(var col = 0; col < 7; col++){
+for(var row = 0; row < rows; row++){
+  for(var col = 0; col < cols; col++){
     var x = c.x + w/2 * (row+col)
       , y = c.y + h/2 * (col-row); 
 
